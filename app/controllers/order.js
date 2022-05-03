@@ -24,9 +24,13 @@ module.exports = {
         return res.status(400).json({
           msg: `Kuantitas tidak boleh kurang dari ${serv.min} dan lebih dari ${serv.max}`,
         });
+      if (!target)
+        return res.status(400).json({
+          msg: `Target tidak boleh kosong`,
+        });
       // const price = parseInt(serv.rate);
       // const amount = makeFinalPrice(price) * quantity;
-      const amount = serv.rate;
+      const amount = (serv.rate / 1000) * quantity;
 
       if (user.balance < amount)
         return res
