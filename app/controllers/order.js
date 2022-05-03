@@ -30,7 +30,7 @@ module.exports = {
         });
       // const price = parseInt(serv.rate);
       // const amount = makeFinalPrice(price) * quantity;
-      const amount = (serv.rate / 1000) * quantity;
+      const amount = Math.ceil((serv.rate / 1000) * quantity);
 
       if (user.balance < amount)
         return res
