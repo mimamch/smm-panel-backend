@@ -9,7 +9,7 @@ var app = express();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URL);
 
-app.use(cors());
+app.use(cors({ credentials: true }));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
