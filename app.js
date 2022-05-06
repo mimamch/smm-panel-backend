@@ -9,7 +9,13 @@ var app = express();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URL);
 
-app.use(cors({ credentials: true, origin: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(function (req, res, next) {
   res.header("Content-Type", "application/json;charset=UTF-8");
   res.header("Access-Control-Allow-Credentials", true);

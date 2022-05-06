@@ -73,7 +73,10 @@ module.exports = {
         process.env.SECRET_KEY
       );
 
-      res.cookie("token", token);
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 3600 * 24 * 30,
+      });
       return res.status(200).json({
         msg: "OK",
         token: token,
