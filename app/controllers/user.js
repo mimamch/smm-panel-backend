@@ -50,6 +50,10 @@ module.exports = {
           msg: "Username/Email tidak ditemukan",
         });
       }
+      if (!password)
+        return res
+          .status(400)
+          .json({ msg: "Password yang anda masukkan salah" });
       const { password: pw } = query[0];
       const compare = await bcrypt.compare(password, pw);
       if (!compare) {

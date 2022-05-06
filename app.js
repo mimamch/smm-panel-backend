@@ -10,7 +10,15 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URL);
 
 app.use(cors({ credentials: true, origin: true }));
-
+app.use(function (req, res, next) {
+  res.header("Content-Type", "application/json;charset=UTF-8");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

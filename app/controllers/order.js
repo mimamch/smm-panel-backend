@@ -17,8 +17,9 @@ module.exports = {
       const decoded = jwt.decode(token);
       const serv = await getServicesbyId(service);
       const user = await User.findById(decoded._id).select("-password");
-      if (!user) return res.status(401).json({ msg: "Access Denied" });
-      if (serv == undefined)
+      if (!user || !token)
+        return res.status(401).json({ msg: "Access Denied" });
+      if (!serv)
         return res.status(400).json({ msg: "Service tidak ditemukan" });
       if (quantity < serv.min || quantity > serv.max)
         return res.status(400).json({
