@@ -36,7 +36,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 const routes = require("./app/routes");
+const routes2 = require("./v2/");
 app.use("/api/v1", routes);
+app.use("/api/v2", routes2);
 
 var cron = require("node-cron");
 const { updateDatabase } = require("./tools/update");

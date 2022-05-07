@@ -17,7 +17,7 @@ module.exports = {
         //   data: { finalPrice, ...query },
         // });
         return res.status(200).json({
-          data: { query },
+          data: query,
         });
       }
       // const response = await axios.post(process.env.API_ENDPOINT, {

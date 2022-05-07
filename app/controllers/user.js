@@ -48,9 +48,9 @@ module.exports = {
   },
   login: async (req, res) => {
     try {
-      const { username, email, password } = req.body;
+      const { username, password } = req.body;
       const query = await User.find({
-        $or: [{ email: email }, { username: username }],
+        $or: [{ email: username }, { username: username }],
       });
       if (query.length == 0) {
         return res.status(404).json({
@@ -82,7 +82,7 @@ module.exports = {
 
       res.cookie("token", token, {
         httpOnly: true,
-        maxAge: 3600 * 24 * 30,
+        maxAge: 1000 * 3600 * 24 * 30,
       });
       return res.status(200).json({
         msg: "OK",

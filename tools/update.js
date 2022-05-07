@@ -10,8 +10,6 @@ module.exports = {
         action: "services",
       });
 
-      //   UPDATE CATEGORY
-
       //   UPDATE SERVICES
 
       response.data.forEach(async (e) => {
@@ -42,6 +40,8 @@ module.exports = {
         let model = await Services.findOneAndUpdate(query, update, options);
       });
       console.log("SERVICES UPDATED");
+
+      //   UPDATE CATEGORY
 
       let category = [];
       response.data.forEach((e) => {

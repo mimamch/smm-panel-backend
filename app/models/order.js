@@ -17,6 +17,8 @@ const HistoryOrderSchema = new Schema(
     },
     balanceBefore: Number,
     balanceAfter: Number,
+    apiVersion: { type: Number, default: 1 },
+    serverPrice: Number,
   },
   { timestamps: true }
 );

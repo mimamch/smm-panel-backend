@@ -14,6 +14,7 @@ module.exports = {
       const { service, quantity, target } = req.body;
       const header = req.headers.authorization;
       const token = header.split(" ")[1] || req.cookies.token;
+      if (!token) return res.status(401).json({ msg: "Access Denied" });
       const decoded = jwt.decode(token);
       const serv = await getServicesbyId(service);
       const user = await User.findById(decoded._id).select("-password");

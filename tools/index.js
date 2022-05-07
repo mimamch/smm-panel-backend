@@ -57,7 +57,7 @@ const makeFinalPrice = (rate) => {
 
 const isLoggin = (req, res, next) => {
   try {
-    if (!req.headers.authorization)
+    if (!req.headers.authorization && !req.cookies.token)
       return res.status(401).json({
         error: "Authentication Failed",
         msg: "Access Denied, You must login first.",
