@@ -36,7 +36,7 @@ const getServicesbyId = async (id) => {
 
 const getServicesbyCategory = async (cat) => {
   try {
-    const serv = await Services.find({ category: cat });
+    const serv = await Services.find({ category: cat }).sort({ rate: 1 });
 
     return serv;
   } catch (error) {
