@@ -47,6 +47,7 @@ module.exports = {
       });
 
       if (send.data.success) {
+        const balanceBefore = user.balance;
         user.balance -= amount;
         user.balanceUsed += amount;
         await user.save();
@@ -57,9 +58,9 @@ module.exports = {
           serviceName: serv.name,
           amount: amount,
           quantity: quantity,
-          finalBalance: user.balance,
+          balanceAfter: user.balance,
+          balanceBefore: balanceBefore,
         });
-        console.log(send.data);
         const history = await makeHistory.save();
         return res.status(200).json({ history });
       }

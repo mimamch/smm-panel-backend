@@ -15,7 +15,8 @@ const HistoryOrderSchema = new Schema(
       enum: ["success", "pending", "failed"],
       default: "pending",
     },
-    finalBalance: Number,
+    balanceBefore: Number,
+    balanceAfter: Number,
   },
   { timestamps: true }
 );
