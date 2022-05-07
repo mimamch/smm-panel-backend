@@ -41,10 +41,12 @@ app.use("/api/v1", routes);
 app.use("/api/v2", routes2);
 
 var cron = require("node-cron");
-const { updateDatabase } = require("./tools/update");
+const { updateDatabase } = require("./v2/tools");
 
-cron.schedule("59 1 * * *", () => {
-  updateDatabase();
+cron.schedule(" 59 1 * * *", async () => {
+  const isUpdated = await updateDatabase();
+  if (!isUpdated) return console.log("Fail Update Database");
+  return console.log("Database Updated");
 });
 
 // catch 404 and forward to error handler

@@ -74,7 +74,6 @@ module.exports = {
         const history = await makeHistory.save();
         return res.status(200).json({ history });
       }
-      console.log(send.data);
       res.status(500).json({
         msg: send.data.error,
       });
