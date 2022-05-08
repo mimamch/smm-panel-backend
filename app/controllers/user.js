@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const HistoryOrder = require("../models/order");
 module.exports = {
   register: async (req, res) => {
     try {
@@ -111,6 +112,29 @@ module.exports = {
 
         return res.status(400).json({ msg: Object.values(errors) });
       }
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
+  history: async (req, res) => {
+    try {
+      const header = req.headers.authorization;
+      if (!header)
+        return res.status(401).json({
+          msg: "Access Denied, You Must Login First.",
+        });
+      const token = header.split(" ")[1];
+      const decoded = jwt.decode(token);
+      const history = await HistoryOrder.find({
+        user: decoded._id,
+        apiVersion: req.query.api,
+      });
+      res.status(200).json({
+        length: history.length,
+        history: history,
+      });
+    } catch (error) {
       res.status(500).json({
         msg: error.message,
       });
