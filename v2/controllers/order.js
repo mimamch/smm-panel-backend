@@ -67,6 +67,7 @@ module.exports = {
           serviceName: serv.name,
           amount: amount,
           quantity: quantity,
+          target: target,
           balanceAfter: user.balance,
           balanceBefore: balanceBefore,
           apiVersion: 2,

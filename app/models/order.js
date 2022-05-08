@@ -10,6 +10,7 @@ const HistoryOrderSchema = new Schema(
     serviceName: String,
     amount: Number,
     quantity: Number,
+    target: String,
     orderStatus: {
       type: String,
       enum: ["success", "pending", "failed"],
