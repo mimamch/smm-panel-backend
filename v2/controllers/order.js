@@ -77,7 +77,7 @@ module.exports = {
       }
       // console.log(send);
       res.status(500).json({
-        msg: send.data,
+        msg: send.data.data,
       });
     } catch (error) {
       res.status(500).json({
