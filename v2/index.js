@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.use("/services", require("./routes/services"));
 router.use("/order", isLoggin, require("./routes/order"));
+router.use("/ticket", isLoggin, require("./routes/ticket"));
 
 module.exports = router;

@@ -23,6 +23,12 @@ const UserSchema = new Schema(
     password: { type: String, required: [true, "Password Harus Di Isi"] },
     totalDeposit: { type: Number, default: 0 },
     balanceUsed: { type: Number, default: 0 },
+    role: {
+      type: String,
+      enum: ["reseller", "admin"],
+      default: "reseller",
+      required: true,
+    },
   },
   { timestamps: true }
 );
