@@ -129,7 +129,7 @@ module.exports = {
       const history = await HistoryOrder.find({
         user: decoded._id,
         apiVersion: req.query.api,
-      });
+      }).sort({ createdAt: -1 });
       res.status(200).json({
         length: history.length,
         history: history,
