@@ -41,7 +41,7 @@ app.use("/api/v1", routes);
 app.use("/api/v2", routes2);
 
 var cron = require("node-cron");
-const { updateDatabase } = require("./v2/tools");
+const { updateDatabase, getServicesAPI } = require("./v2/tools");
 
 cron.schedule(" 59 1 * * *", async () => {
   const isUpdated = await updateDatabase();

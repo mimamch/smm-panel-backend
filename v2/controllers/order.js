@@ -39,7 +39,7 @@ module.exports = {
           .json({ msg: "Maaf, Saldo anda tidak mencukupi" });
 
       const send = await axios.post(
-        "https://irvankede-smm.co.id/api/order",
+        `${process.env.API_ENDPOINT2}/order`,
         {
           api_id: process.env.API_ID_2,
           api_key: process.env.API_KEY_2,
@@ -75,8 +75,9 @@ module.exports = {
         const history = await makeHistory.save();
         return res.status(200).json({ history });
       }
+      // console.log(send);
       res.status(500).json({
-        msg: send.data.error,
+        msg: send.data,
       });
     } catch (error) {
       res.status(500).json({
@@ -88,7 +89,7 @@ module.exports = {
     try {
       const { id } = req.body;
       const status = await axios.post(
-        "https://irvankede-smm.co.id/api/status",
+        `${process.env.API_ENDPOINT2}/status`,
         {
           api_id: process.env.API_ID_2,
           api_key: process.env.API_KEY_2,

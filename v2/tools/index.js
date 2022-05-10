@@ -1,14 +1,13 @@
 const { default: axios } = require("axios");
 const { Services2, Category2 } = require("../models/services");
-
 let tools = {
   getServicesAPI: async (req, res) => {
     try {
       const services = await axios.post(
-        "https://irvankede-smm.co.id/api/services",
+        `${process.env.API_ENDPOINT2}/services`,
         {
-          api_id: 28958,
-          api_key: "19f73c-5b066e-ff4df4-05507c-7c764e",
+          api_id: process.env.API_ID_2,
+          api_key: process.env.API_KEY_2,
         },
         {
           headers: {
@@ -16,6 +15,7 @@ let tools = {
           },
         }
       );
+
       if (!services.status) return new Error("Respon API Error");
       let servicesFiltered = [];
       services.data.data.forEach((e) => {
