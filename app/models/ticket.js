@@ -1,18 +1,14 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
 const { Schema, ObjectId } = mongoose;
 
 const ticketSchema = new Schema(
   {
-    _id: Number,
     user: { type: ObjectId, ref: "User" },
     subject: String,
     firstMessage: String,
   },
-  { timestamps: true, _id: false }
+  { timestamps: true }
 );
-
-ticketSchema.plugin(AutoIncrement, { inc_field: "_id" });
 
 const ticketMessageScehma = new Schema(
   {
