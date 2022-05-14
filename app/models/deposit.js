@@ -7,6 +7,7 @@ const BankSchema = new Schema(
     accountNumber: String,
     accountName: String,
     isAuto: { type: Boolean, default: false },
+    min: { type: Number, default: 10000 },
   },
   { timestamps: true }
 );
