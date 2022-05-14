@@ -55,4 +55,16 @@ module.exports = {
       });
     }
   },
+  getBank: async (req, res) => {
+    try {
+      const bank = await Bank.find();
+      res.status(200).json({
+        data: bank,
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
 };
