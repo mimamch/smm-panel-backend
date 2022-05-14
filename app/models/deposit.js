@@ -17,7 +17,7 @@ const DepositSchema = new Schema(
   {
     user: { type: ObjectId, ref: "User" },
     nominal: Number,
-    bank: { type: ObjectId, ref: "Bank" },
+    bank: { type: Object },
     status: {
       type: String,
       enum: ["pending", "success", "failed"],

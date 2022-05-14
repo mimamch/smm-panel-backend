@@ -21,9 +21,10 @@ module.exports = {
           msg: "Harap selesaikan/hapus permintaan deposit sebelumnya untuk membuat deposit baru",
           deposit: isDuplicate[0],
         });
+      const bankInfo = await Bank.findById(bank);
       const deposit = new Deposit({
         user: decoded._id,
-        bank,
+        bank: bankInfo,
         nominal,
       });
       const depo = await deposit.save();
@@ -61,6 +62,18 @@ module.exports = {
       res.status(200).json({
         length: bank.length,
         data: bank,
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
+  getDepositInfo: async (req, res) => {
+    try {
+      const info = await Deposit.findById(req.query.id);
+      res.status(200).json({
+        data: info,
       });
     } catch (error) {
       res.status(500).json({
