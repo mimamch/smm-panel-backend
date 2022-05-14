@@ -59,6 +59,7 @@ module.exports = {
     try {
       const bank = await Bank.find();
       res.status(200).json({
+        length: bank.length,
         data: bank,
       });
     } catch (error) {
