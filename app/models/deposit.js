@@ -8,6 +8,8 @@ const BankSchema = new Schema(
     accountName: String,
     isAuto: { type: Boolean, default: false },
     min: { type: Number, default: 10000 },
+    max: { type: Number, default: 100000000 },
+    promo: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
