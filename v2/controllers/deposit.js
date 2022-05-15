@@ -83,7 +83,11 @@ module.exports = {
   },
   cancelDeposit: async (req, res) => {
     try {
-      await Deposit.findByIdAndUpdate(req.params.id, { status: "failed" });
+      console.log(req.body);
+      const depo = await Deposit.findByIdAndUpdate(req.body.id, {
+        status: "failed",
+      });
+      console.log(depo);
       res.status(200).json({
         msg: "Status Updated to Failed",
       });
