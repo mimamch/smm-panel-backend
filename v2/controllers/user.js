@@ -35,10 +35,14 @@ module.exports = {
       const { id } = req.body;
 
       const deposit = await Deposit.findById(id).populate("user");
+      let promo = deposit.bank.promo || 0;
+      if (promo) {
+        promo = (deposit.nominal * promo) / 100;
+      }
       if (req.body.action == "accept") {
         deposit.balanceBefore = deposit.user.balance;
         deposit.status = "success";
-        deposit.user.balance += deposit.nominal;
+        deposit.user.balance += deposit.nominal + promo;
         deposit.user.totalDeposit += deposit.nominal;
         deposit.balanceAfter = deposit.user.balance;
       }
