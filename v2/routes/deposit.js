@@ -13,6 +13,6 @@ router.get("/get-bank", getBank);
 router.post("/new", newDeposit);
 router.get("/history", historyDeposit);
 router.get("/info-deposit", getDepositInfo);
-router.get("/cancel-deposit", cancelDeposit);
+router.post("/cancel-deposit", cancelDeposit);
 
 module.exports = router;
