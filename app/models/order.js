@@ -13,7 +13,7 @@ const HistoryOrderSchema = new Schema(
     target: String,
     orderStatus: {
       type: String,
-      enum: ["success", "pending", "failed"],
+      enum: ["success", "pending", "failed", "processing"],
       default: "pending",
     },
     balanceBefore: Number,

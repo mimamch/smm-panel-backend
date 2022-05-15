@@ -1,4 +1,6 @@
 const { default: axios } = require("axios");
+const req = require("express/lib/request");
+const HistoryOrder = require("../../app/models/order");
 const { Services2, Category2 } = require("../models/services");
 let tools = {
   getServicesAPI: async (req, res) => {
@@ -116,6 +118,57 @@ let tools = {
       return true;
     } catch (error) {
       console.log(error);
+      return false;
+    }
+  },
+  updateStatus: async (id) => {
+    try {
+      const orderHis = await HistoryOrder.find({ orderStatus: "pending" });
+      // console.log(orderHis);
+
+      orderHis.forEach(async (e) => {
+        const check = await axios.post(
+          `${process.env.API_ENDPOINT2}/status`,
+          {
+            api_id: process.env.API_ID_2,
+            api_key: process.env.API_KEY_2,
+            id: e.orderId,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // console.log(check.data);
+        if (check.data.status == true) {
+          if (check.data.data.status.toLowerCase() == "success") {
+            // return console.log(e.orderId);
+            await HistoryOrder.findOneAndUpdate(
+              { orderId: e.orderId },
+              { orderStatus: "success" }
+            );
+            return;
+          }
+          if (check.data.data.status.toLowerCase() == "error") {
+            // return console.log(e.orderId);
+            await HistoryOrder.findOneAndUpdate(
+              { orderId: e.orderId },
+              { orderStatus: "failed" }
+            );
+            return;
+          }
+        } else if (check.data.status == false) {
+          await HistoryOrder.findOneAndUpdate(
+            { orderId: e.orderId },
+            { orderStatus: "failed" }
+          );
+        }
+      });
+      return true;
+    } catch (error) {
+      console.log(error.message);
+      console.log("ERRRRORRR");
       return false;
     }
   },
