@@ -36,9 +36,8 @@ module.exports = {
           data: services,
         });
       }
-      const category = await getCategory()
-        .collation({ locale: "en", strength: 2 })
-        .sort({ name: 1 });
+      const category = await getCategory();
+
       res.status(200).json({
         length: category.length,
         data: category,

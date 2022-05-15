@@ -41,7 +41,9 @@ let tools = {
   },
   getCategory: async () => {
     try {
-      const category = await Category2.find();
+      const category = await Category2.find()
+        .collation({ locale: "en", strength: 2 })
+        .sort({ name: 1 });
       let categories = [];
       category.forEach((e) => {
         if (e.name != "zzzzzz") return categories.push(e.name);
