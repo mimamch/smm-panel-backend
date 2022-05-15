@@ -7,5 +7,6 @@ router.use("/services", require("./routes/services"));
 router.use("/order", isLoggin, require("./routes/order"));
 router.use("/ticket", isLoggin, require("./routes/ticket"));
 router.use("/deposit", isLoggin, require("./routes/deposit"));
+router.use("/user", require("./routes/user"));
 
 module.exports = router;

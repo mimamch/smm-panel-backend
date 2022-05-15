@@ -77,6 +77,7 @@ module.exports = {
           fullName: query[0].fullName,
           email: query[0].email,
           phoneNumber: query[0].phoneNumber,
+          role: query[0].role,
         },
         process.env.SECRET_KEY
       );
