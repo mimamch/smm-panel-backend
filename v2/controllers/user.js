@@ -4,7 +4,9 @@ const User = require("../../app/models/user");
 module.exports = {
   getUser: async (req, res) => {
     try {
-      const user = await User.find().sort({ createdAt: -1 });
+      const user = await User.find()
+        .collation({ locale: "en", strength: 2 })
+        .sort({ username: 1 });
       res.status(200).json({
         data: user,
       });
