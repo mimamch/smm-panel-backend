@@ -87,7 +87,6 @@ module.exports = {
       const depo = await Deposit.findByIdAndUpdate(req.body.id, {
         status: "failed",
       });
-      console.log(depo);
       res.status(200).json({
         msg: "Status Updated to Failed",
       });
