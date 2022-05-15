@@ -81,4 +81,16 @@ module.exports = {
       });
     }
   },
+  cancelDeposit: async (req, res) => {
+    try {
+      await Deposit.findByIdAndUpdate(req.query.id, { status: "failed" });
+      res.status(200).json({
+        msg: "Status Updated to Failed",
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
 };
