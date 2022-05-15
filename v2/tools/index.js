@@ -75,6 +75,9 @@ let tools = {
   },
   updateDatabase: async () => {
     try {
+      await Services2.deleteMany({});
+      await Category2.deleteMany({});
+      console.log("DB FLUSHED");
       const services = await tools.getServicesAPI();
       services.forEach(async (e) => {
         let rate = (price) => {
