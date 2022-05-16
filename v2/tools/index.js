@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const req = require("express/lib/request");
 const HistoryOrder = require("../../app/models/order");
+const User = require("../../app/models/user");
 const { Services2, Category2 } = require("../models/services");
 let tools = {
   getServicesAPI: async (req, res) => {
@@ -127,8 +128,6 @@ let tools = {
   updateStatus: async (id) => {
     try {
       const orderHis = await HistoryOrder.find({ orderStatus: "pending" });
-      // console.log(orderHis);
-
       orderHis.forEach(async (e) => {
         const check = await axios.post(
           `${process.env.API_ENDPOINT2}/status`,
@@ -143,6 +142,7 @@ let tools = {
             },
           }
         );
+        // console.log(check.data.data);
         // console.log(check.data);
         if (check.data.status == true) {
           if (check.data.data.status.toLowerCase() == "success") {
@@ -155,11 +155,32 @@ let tools = {
           }
           if (check.data.data.status.toLowerCase() == "error") {
             // return console.log(e.orderId);
-            await HistoryOrder.findOneAndUpdate(
+            const hist = await HistoryOrder.findOneAndUpdate(
               { orderId: e.orderId },
               { orderStatus: "failed" }
             );
+            const user = await User.findById(hist.user);
+            user.balance += hist.amount;
+            hist.balanceAfter = hist.balanceBefore;
+            hist.amount = 0;
+            await user.save();
+            await hist.save();
             return;
+          } else if (check.data.data.status.toLowerCase() == "partial") {
+            const his = await HistoryOrder.findById(e._id);
+            const service = await tools.getServiceById(his.serviceId);
+            const refund = Math.ceil(
+              (service.rate / 1000) * parseInt(check.data.data.remains)
+            );
+            const amountFinal = his.amount - refund;
+            const user = await User.findById(his.user);
+            user.balance += refund;
+            his.orderStatus = "partial";
+            his.quantity = his.quantity - parseInt(check.data.data.remains);
+            his.amount = amountFinal;
+            his.balanceAfter = his.balanceBefore + refund;
+            await his.save();
+            await user.save();
           }
         } else if (check.data.status == false) {
           await HistoryOrder.findOneAndUpdate(

@@ -49,7 +49,7 @@ cron.schedule(" 59 1 * * *", async () => {
   if (!isUpdated) return console.log("Fail Update Database");
   return console.log("Database Updated");
 });
-cron.schedule(" 5 * * * *", async () => {
+cron.schedule(" 0,30 * * * *", async () => {
   const isUpdated = await updateStatus();
   if (!isUpdated) return console.log("Fail Update Status");
   return console.log("Status Updated");

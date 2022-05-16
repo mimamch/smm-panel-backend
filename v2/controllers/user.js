@@ -1,4 +1,5 @@
 const { Deposit } = require("../../app/models/deposit");
+const HistoryOrder = require("../../app/models/order");
 const User = require("../../app/models/user");
 
 module.exports = {
@@ -57,6 +58,18 @@ module.exports = {
 
       res.status(200).json({
         data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
+  getAllHistory: async (req, res) => {
+    try {
+      const history = await HistoryOrder.find().sort({ createdAt: -1 });
+      res.status(200).json({
+        data: history,
       });
     } catch (error) {
       res.status(500).json({
