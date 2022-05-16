@@ -67,7 +67,9 @@ module.exports = {
   },
   getAllHistory: async (req, res) => {
     try {
-      const history = await HistoryOrder.find().sort({ createdAt: -1 });
+      const history = await HistoryOrder.find()
+        .populate("user")
+        .sort({ createdAt: -1 });
       res.status(200).json({
         data: history,
       });
