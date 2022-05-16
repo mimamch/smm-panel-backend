@@ -141,4 +141,37 @@ module.exports = {
       });
     }
   },
+  changeProfile: async (req, res) => {
+    try {
+      const header = req.headers.authorization;
+      if (!header)
+        return res.status(401).json({
+          msg: "Access Denied, You Must Login First.",
+        });
+      const token = header.split(" ")[1];
+      const decoded = jwt.decode(token);
+      let hashPass = undefined;
+      if (req.body.password) {
+        if (req.body.password != req.body.confirmPassword)
+          return res.status(500).json({
+            msg: "Password dan Konfirmasi Password Tidak Sama!",
+          });
+        hashPass = bcrypt.hashSync(req.body.password, process.env.SALT || 10);
+      }
+      await User.findByIdAndUpdate(decoded._id, {
+        username: req.body.username,
+        fullName: req.body.fullName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        password: hashPass,
+      });
+      res.status(200).json({
+        msg: "Profil Berhasil Diubah",
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
 };
