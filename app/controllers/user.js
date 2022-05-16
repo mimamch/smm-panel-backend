@@ -172,6 +172,22 @@ module.exports = {
         msg: "Profil Berhasil Diubah",
       });
     } catch (error) {
+      if (error.code === 11000) {
+        let key = Object.keys(error.keyValue)[0];
+        let val = error.keyValue[key];
+        return res.status(403).json({
+          msg: `${key} ${val} Sudah Digunakan`,
+        });
+      }
+      if (error.name === "ValidationError") {
+        let errors = {};
+
+        Object.keys(error.errors).forEach((key) => {
+          errors[key] = error.errors[key].message;
+        });
+
+        return res.status(400).json({ msg: Object.values(errors)[0] });
+      }
       res.status(500).json({
         msg: error.message,
       });
