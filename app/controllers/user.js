@@ -156,7 +156,10 @@ module.exports = {
           return res.status(500).json({
             msg: "Password dan Konfirmasi Password Tidak Sama!",
           });
-        hashPass = bcrypt.hashSync(req.body.password, process.env.SALT || 10);
+        hashPass = bcrypt.hashSync(
+          req.body.password,
+          parseInt(process.env.SALT) || 10
+        );
       }
       await User.findByIdAndUpdate(decoded._id, {
         username: req.body.username,
