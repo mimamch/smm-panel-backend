@@ -59,6 +59,7 @@ cron.schedule(" 0,30 * * * *", async () => {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+  return res.redirect("https://smm.mimamch.online");
   next(createError(404));
 });
 
