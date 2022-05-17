@@ -2,6 +2,9 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const HistoryOrder = require("../models/order");
+const sendEmail = require("../../mailer");
+const templateForgotPassword = require("../../mailer/templateForgotPassword");
+const Verification = require("../models/verification");
 module.exports = {
   register: async (req, res) => {
     try {
@@ -190,6 +193,97 @@ module.exports = {
       }
       res.status(500).json({
         msg: error.message,
+      });
+    }
+  },
+  sendForgotEmail: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user)
+        return res.status(404).json({
+          msg: "Email tidak ditemukan atau belum terdaftar",
+        });
+      const random = Math.round(Math.random() * (800000 - 200000) + 200000);
+      const save = new Verification({
+        code: random,
+        expired: new Date().getTime() + 300000, // 5 MINUTES EXPIRED
+        user: user._id,
+      });
+      await save.save();
+      const send = await sendEmail(user.email, {
+        subject: "Kode Verifikasi Lupa Password Anda",
+        html: templateForgotPassword(random),
+      });
+      if (!send)
+        return res.status(500).json({
+          msg: "Internal Server Error",
+        });
+      res.status(200).json({
+        msg: "Kode Verifikasi Berhasil Dikirim, Hanya Berlaku Selama 5 Menit.",
+        id: save._id,
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
+  },
+  checkVerificatonCode: async (req, res) => {
+    try {
+      const { id, code } = req.body;
+      const verif = await Verification.findById(id);
+      if (!verif)
+        return res.status(404).json({
+          msg: "Kode Verifikasi Tidak Ditemukan",
+          status: false,
+        });
+
+      if (verif.code != code)
+        return res.status(403).json({
+          status: false,
+          msg: "Kode Verifikasi Salah",
+        });
+      const now = new Date().getTime();
+      if (now >= verif.expired)
+        return res.status(403).json({
+          msg: "Kode Verifikasi Kadaluwarsa",
+          status: false,
+        });
+      verif.status = true;
+      await verif.save();
+      res.status(200).json({
+        status: true,
+        msg: "Verifikasi Kode Berhasil",
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+        status: false,
+      });
+    }
+  },
+  createNewPassword: async (req, res) => {
+    try {
+      const code = await Verification.findById(req.body.id).select("-code");
+      if (!code.status)
+        return res.status(401).json({
+          msg: "Belum Verifikasi Kode",
+        });
+      const { password } = req.body;
+      const hashPass = bcrypt.hashSync(
+        password,
+        parseInt(process.env.SALT) || 10
+      );
+      await User.findByIdAndUpdate(code.user, { password: hashPass });
+      res.status(200).json({
+        status: true,
+        msg: "Kata Sandi Berhasil Diubah",
+      });
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+        status: false,
       });
     }
   },
