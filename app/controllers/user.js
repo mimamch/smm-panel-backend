@@ -213,7 +213,7 @@ module.exports = {
       await save.save();
       const send = await sendEmail(user.email, {
         subject: "Kode Verifikasi Lupa Password Anda",
-        html: templateForgotPassword(random),
+        text: templateForgotPassword(random),
       });
       if (!send)
         return res.status(500).json({
