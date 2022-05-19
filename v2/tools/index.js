@@ -161,6 +161,7 @@ let tools = {
             );
             const user = await User.findById(hist.user);
             user.balance += hist.amount;
+            user.balanceUsed -= hist.amount;
             hist.balanceAfter = hist.balanceBefore;
             hist.amount = 0;
             await user.save();
@@ -175,6 +176,7 @@ let tools = {
             const amountFinal = his.amount - refund;
             const user = await User.findById(his.user);
             user.balance += refund;
+            user.balanceUsed -= refund;
             his.orderStatus = "partial";
             his.quantity = his.quantity - parseInt(check.data.data.remains);
             his.amount = amountFinal;
