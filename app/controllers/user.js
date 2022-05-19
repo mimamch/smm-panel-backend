@@ -19,6 +19,22 @@ module.exports = {
         phoneNumber,
       });
       const data = await user.save();
+      sendEmail(process.env.EMAIL_MAILER, {
+        subject: "Ada Pendaftar Baru !",
+        html: `
+       username : ${username} <br/>
+       email : ${email} <br/>
+       fullName : ${fullName} <br/>
+       phoneNumber : ${phoneNumber} <br/>
+       `,
+      });
+      if (email)
+        sendEmail(email, {
+          subject: "Terimakasih Telah Mendaftar !",
+          html: `
+      <h4> Terimakasih Telah Mendaftar Dilayanan Kami ❤️</h4>
+       `,
+        });
       res.status(200).json({
         data: {
           username: data.username,
