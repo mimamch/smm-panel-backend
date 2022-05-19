@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Deposit, Bank } = require("../../app/models/deposit");
 const User = require("../../app/models/user");
+const sendEmail = require("../../mailer");
 
 module.exports = {
   newDeposit: async (req, res) => {
@@ -28,6 +29,12 @@ module.exports = {
         nominal,
       });
       const depo = await deposit.save();
+      sendEmail(process.env.EMAIL_MAILER, {
+        subject: "Ada Permintaan Deposit!",
+        html: `
+        ${JSON.stringify(depo)}
+        `,
+      });
       res.status(200).json({
         msg: depo,
       });
