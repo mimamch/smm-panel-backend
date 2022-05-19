@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (destination, message) => {
   let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     requireTLS: true,
@@ -12,7 +12,7 @@ const sendEmail = async (destination, message) => {
     },
   });
   const mailOptions = {
-    from: "Layanan NUSANTARA SMM",
+    from: process.env.EMAIL_MAILER,
     to: destination,
     subject: message.subject,
     html: message.html,

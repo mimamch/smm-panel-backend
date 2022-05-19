@@ -42,6 +42,10 @@ module.exports = {
         length: category.length,
         data: category,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        msg: error.message,
+      });
+    }
   },
 };
