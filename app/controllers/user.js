@@ -8,7 +8,14 @@ const Verification = require("../models/verification");
 module.exports = {
   register: async (req, res) => {
     try {
-      const { username, fullName, email, phoneNumber } = req.body;
+      let { username, fullName, email, phoneNumber } = req.body;
+      if (username.includes(" ")) {
+        return res.status(400).json({
+          msg: "Username Tidak Boleh Mengandung Spasi",
+        });
+      }
+      if (email) email = email.trim();
+      console.log(email);
       const pw = req.body.password;
       const hashPass = await bcrypt.hash(pw, parseInt(process.env.SALT));
       const user = new User({

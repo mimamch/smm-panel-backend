@@ -1,6 +1,7 @@
 const { Deposit } = require("../../app/models/deposit");
 const HistoryOrder = require("../../app/models/order");
 const User = require("../../app/models/user");
+const sendEmail = require("../../mailer");
 
 module.exports = {
   getUser: async (req, res) => {
@@ -46,6 +47,19 @@ module.exports = {
         deposit.user.balance += deposit.nominal + promo;
         deposit.user.totalDeposit += deposit.nominal;
         deposit.balanceAfter = deposit.user.balance;
+        if (deposit.user.email)
+          sendEmail(deposit?.user?.email, {
+            subject: "Deposit Berhasil",
+            html: `
+          <h2 style="text-align: center;">Saldo Anda Berhasil Ditambahkan!</h2>
+          <p>Nominal Deposit : <b>Rp. ${deposit.nominal} + ${promo}</p>
+          <p>Saldo anda saat ini : <b>Rp. ${deposit.user.balance}</p>
+          <br/>
+          <br/>
+          <br/>
+          <h3 style="text-align: center;">Tetap Gunakan Layanan SMM Terbaik <a href='https://smm.mimamch.online'>www.smm.mimamch.online</a></h3>
+          `,
+          });
       }
       if (req.body.action == "decline") {
         deposit.status = "failed";
