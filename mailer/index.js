@@ -12,7 +12,10 @@ const sendEmail = async (destination, message) => {
     },
   });
   const mailOptions = {
-    from: process.env.EMAIL_MAILER,
+    from: {
+      name: "Layanan Nusantara SMM",
+      address: process.env.EMAIL_MAILER,
+    },
     to: destination,
     subject: message.subject,
     html: message.html,
