@@ -13,7 +13,7 @@ const sendEmail = async (destination, message) => {
   });
   const mailOptions = {
     from: {
-      name: "Layanan Nusantara SMM",
+      name: "SMM Panel Termurah, Tercepat, dan Terpercaya",
       address: process.env.EMAIL_MAILER,
     },
     to: destination,
