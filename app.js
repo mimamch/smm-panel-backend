@@ -49,12 +49,12 @@ const { updateStatus } = require("./v2/tools");
 cron.schedule(" 59 1 * * *", async () => {
   const isUpdated = await updateDatabase();
   if (!isUpdated) return console.log("Fail Update Database");
-  return console.log("Database Updated");
+  return console.log(`Database Updated on ${new Date()}`);
 });
 cron.schedule(" 0,30 * * * *", async () => {
   const isUpdated = await updateStatus();
   if (!isUpdated) return console.log("Fail Update Status");
-  return console.log("Status Updated");
+  return;
 });
 
 // catch 404 and forward to error handler
