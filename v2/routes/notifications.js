@@ -27,7 +27,6 @@ router.post("/", async (req, res) => {
         const failed = await Deposit.findByIdAndUpdate(req.body.order_id, {
           status: "failed",
         });
-        console.log(failed);
       }
     }
     res.status(200).json({
