@@ -18,12 +18,12 @@ module.exports = {
         user: decoded._id,
         status: "pending",
       });
-      if (isDuplicate.length != 0)
+      const bankInfo = await Bank.findById(bank);
+      if (isDuplicate.length != 0 && !bankInfo.isAuto)
         return res.status(400).json({
           msg: "Harap selesaikan/hapus permintaan deposit sebelumnya untuk membuat deposit baru",
           deposit: isDuplicate[0],
         });
-      const bankInfo = await Bank.findById(bank);
 
       const deposit = new Deposit({
         user: decoded._id,
