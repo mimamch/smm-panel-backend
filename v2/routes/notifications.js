@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
           console.log("Accepted Status");
         }
       } else if (transactionStatus == "settlement") {
+        await acceptDeposit(req.body.order_id);
         console.log("settlement");
       } else if (
         transactionStatus == "cancel" ||
