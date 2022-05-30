@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const req = require("express/lib/request");
+const { Deposit } = require("../../app/models/deposit");
 const HistoryOrder = require("../../app/models/order");
 const User = require("../../app/models/user");
 const { Services2, Category2 } = require("../models/services");
@@ -195,6 +196,40 @@ let tools = {
     } catch (error) {
       console.log(error.message);
       console.log("ERRRRORRR");
+      return false;
+    }
+  },
+  acceptDeposit: async (id) => {
+    try {
+      const deposit = await Deposit.findById(id).populate("user");
+      let promo = deposit.bank.promo || 0;
+      if (promo) {
+        promo = (deposit.nominal * promo) / 100;
+      }
+
+      deposit.balanceBefore = deposit.user.balance;
+      deposit.status = "success";
+      deposit.user.balance += deposit.nominal + promo;
+      deposit.user.totalDeposit += deposit.nominal;
+      deposit.balanceAfter = deposit.user.balance;
+      if (deposit.user.email)
+        sendEmail(deposit?.user?.email, {
+          subject: "Deposit Berhasil",
+          html: `
+          <h2 style="text-align: center;">Saldo Anda Berhasil Ditambahkan!</h2>
+          <p>Nominal Deposit : <b>Rp. ${deposit.nominal} + ${promo}</p>
+          <p>Saldo anda saat ini : <b>Rp. ${deposit.user.balance}</p>
+          <br/>
+          <br/>
+          <br/>
+          <h3 style="text-align: center;">Tetap Gunakan Layanan SMM Terbaik <a href='https://smm.mimamch.online'>www.smm.mimamch.online</a></h3>
+          `,
+        });
+      await deposit.save();
+      await deposit.user.save();
+      return true;
+    } catch (error) {
+      console.log(error);
       return false;
     }
   },
