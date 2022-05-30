@@ -208,6 +208,8 @@ let tools = {
         promo = (deposit.nominal * promo) / 100;
       }
 
+      if (deposit.status != "pending") return false;
+
       deposit.balanceBefore = deposit.user.balance;
       deposit.status = "success";
       deposit.user.balance += deposit.nominal + promo;

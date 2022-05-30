@@ -25,9 +25,11 @@ router.post("/", async (req, res) => {
         transactionStatus == "deny" ||
         transactionStatus == "expire"
       ) {
-        const failed = await Deposit.findByIdAndUpdate(req.body.order_id, {
-          status: "failed",
-        });
+        const failed = await Deposit.findById(req.body.order_id);
+        if (failed.status == "pending") {
+          failed.status = "failed";
+          await failed.save();
+        }
       }
     }
     res.status(200).json({
