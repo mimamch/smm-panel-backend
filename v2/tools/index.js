@@ -3,6 +3,7 @@ const req = require("express/lib/request");
 const { Deposit } = require("../../app/models/deposit");
 const HistoryOrder = require("../../app/models/order");
 const User = require("../../app/models/user");
+const sendEmail = require("../../mailer");
 const { Services2, Category2 } = require("../models/services");
 let tools = {
   getServicesAPI: async (req, res) => {
@@ -212,6 +213,9 @@ let tools = {
       deposit.user.balance += deposit.nominal + promo;
       deposit.user.totalDeposit += deposit.nominal;
       deposit.balanceAfter = deposit.user.balance;
+
+      await deposit.save();
+      await deposit.user.save();
       if (deposit.user.email)
         sendEmail(deposit?.user?.email, {
           subject: "Deposit Berhasil",
@@ -225,8 +229,6 @@ let tools = {
           <h3 style="text-align: center;">Tetap Gunakan Layanan SMM Terbaik <a href='https://smm.mimamch.online'>www.smm.mimamch.online</a></h3>
           `,
         });
-      await deposit.save();
-      await deposit.user.save();
       return true;
     } catch (error) {
       console.log(error);
