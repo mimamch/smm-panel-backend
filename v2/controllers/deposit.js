@@ -45,7 +45,9 @@ module.exports = {
           deposit.redirectUrl = transaction.redirect_url;
           deposit.token = transaction.token;
           const depo = await deposit.save();
-          return res.status(200).json(depo);
+          return res.status(200).json({
+            msg: depo,
+          });
         });
         return;
       }
