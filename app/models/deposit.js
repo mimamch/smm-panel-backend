@@ -23,6 +23,8 @@ const DepositSchema = new Schema(
       enum: ["pending", "success", "failed"],
       default: "pending",
     },
+    redirectUrl: String,
+    token: String,
     balanceBefore: Number,
     balanceAfter: Number,
   },

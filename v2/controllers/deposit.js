@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { Deposit, Bank } = require("../../app/models/deposit");
 const User = require("../../app/models/user");
 const sendEmail = require("../../mailer");
+const { snap } = require("../../midtrans/snap");
 
 module.exports = {
   newDeposit: async (req, res) => {
@@ -23,12 +24,33 @@ module.exports = {
           deposit: isDuplicate[0],
         });
       const bankInfo = await Bank.findById(bank);
+
       const deposit = new Deposit({
         user: decoded._id,
         bank: bankInfo,
         nominal,
       });
+      if (bankInfo.isAuto) {
+        let parameter = {
+          transaction_details: {
+            order_id: deposit._id,
+            gross_amount: nominal,
+          },
+          credit_card: {
+            secure: true,
+          },
+        };
+        snap.createTransaction(parameter).then(async (transaction) => {
+          // transaction token
+          deposit.redirectUrl = transaction.redirect_url;
+          deposit.token = transaction.token;
+          const depo = await deposit.save();
+          return res.status(200).json(depo);
+        });
+        return;
+      }
       const depo = await deposit.save();
+
       sendEmail(process.env.EMAIL_MAILER, {
         subject: "Ada Permintaan Deposit!",
         html: `
