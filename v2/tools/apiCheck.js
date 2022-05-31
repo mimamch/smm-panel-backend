@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const services = await axios.post(
-      `${process.env.API_ENDPOINT2}/services`,
+      `https://smm.mimamch.online/`,
       {
         api_id: process.env.API_ID_2,
         api_key: process.env.API_KEY_2,
@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
         },
       }
     );
-    console.log(services.data);
     res.status(200).json({
       msg: services.data,
     });
