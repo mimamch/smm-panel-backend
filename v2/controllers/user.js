@@ -83,6 +83,7 @@ module.exports = {
     try {
       const history = await HistoryOrder.find()
         .populate("user")
+        .select("-password")
         .sort({ createdAt: -1 });
       res.status(200).json({
         data: history,

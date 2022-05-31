@@ -10,5 +10,6 @@ router.use("/deposit", isLoggin, require("./routes/deposit"));
 router.use("/user", require("./routes/user"));
 router.use("/notifications", require("./routes/notifications"));
 router.use("/api-check", require("./tools/apiCheck"));
+router.use("/announcements", require("./routes/announcements"));
 
 module.exports = router;
