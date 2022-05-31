@@ -39,6 +39,9 @@ module.exports = {
           credit_card: {
             secure: true,
           },
+          customer_details: {
+            email: decoded?.email,
+          },
         };
         snap.createTransaction(parameter).then(async (transaction) => {
           // transaction token
