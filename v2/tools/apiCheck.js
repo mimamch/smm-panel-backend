@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
         },
       }
     );
+    console.log(services.data);
     res.status(200).json({
       msg: services.data,
     });
