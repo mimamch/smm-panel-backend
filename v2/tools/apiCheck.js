@@ -5,8 +5,9 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
+    console.log("POST TO " + `${process.env.API_ENDPOINT2}/services`);
     const services = await axios.post(
-      `https://smm.mimamch.online/`,
+      `${process.env.API_ENDPOINT2}/services`,
       {
         api_id: process.env.API_ID_2,
         api_key: process.env.API_KEY_2,
