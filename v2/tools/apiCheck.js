@@ -6,18 +6,10 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     console.log("POST TO " + `${process.env.API_ENDPOINT2}/services`);
-    const services = await axios.post(
-      `${process.env.API_ENDPOINT2}/services`,
-      {
-        api_id: process.env.API_ID_2,
-        api_key: process.env.API_KEY_2,
-      },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const services = await axios.post(`https://drd3m.com/api/v2`, {
+      action: "services",
+      key: "b1bbaff42968ff33fef2864845e17126",
+    });
     res.status(200).json({
       msg: services.data,
     });
