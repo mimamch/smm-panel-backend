@@ -6,10 +6,18 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     console.log("POST TO " + `${process.env.API_ENDPOINT2}/services`);
-    const services = await axios.post(`${process.env.API_ENDPOINT2}/services`, {
-      api_id: process.env.API_ID_2,
-      api_key: process.env.API_KEY_2,
-    });
+    const services = await axios.post(
+      `${process.env.API_ENDPOINT2}/services`,
+      {
+        api_id: process.env.API_ID_2,
+        api_key: process.env.API_KEY_2,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     res.status(200).json({
       msg: services.data,
     });
